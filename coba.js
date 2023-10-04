@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     Youtube Shorts Autoscroll [chatgpt]
-// @version  v0.1.5
+// @version  1.0.1
 // @author   Subhrajit Prusty and chatgpt and me
 // @icon     https://www.shareicon.net/download/2016/06/18/595989_scrolling.ico
 // @description Autoscroll through YouTube Shorts with toggle button

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         video scroll and timeInfo
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      10.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://www.facebook.com/reel/*

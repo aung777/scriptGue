@@ -27,28 +27,31 @@
 
   // Gaya CSS untuk tombol toggle switch
   const style = `
-    .scrollCheckCointainer{
-        bottom: 5%;
-            left: 1%;
+    .sliderContainer span {
+      margin: auto;
     }
-        .sliderContainer {
-        width: 500px;
-        }
-        .slider-control {
+    .scrollCheckCointainer{
+      bottom: 15%;
+      left: 1%;
+    }
+    .sliderContainer {
+      width: 500px;
+    }
+    .slider-control {
       -webkit-appearance: none;
       width: 100%;
       height: 25px;
       background: #d3d3d3;
       outline: none;
-      opacity: 0.7;
+      opacity: 0.5;
       -webkit-transition: .2s;
       transition: opacity .2s;
     }
-  
+
     .slider-control:hover {
       opacity: 1;
     }
-  
+
     .slider-control::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -57,7 +60,7 @@
       background: #0866ff;
       cursor: pointer;
     }
-  
+
     .slider-control::-moz-range-thumb {
       width: 25px;
       height: 25px;
@@ -75,24 +78,24 @@
   scrollCheckCointainer.className = "scrollCheckCointainer";
   scrollCheckCointainer.innerHTML = `
        <h1>Pilih Opsi:</h1>
-  
+
       <label for="opsi1">
           <input type="checkbox" id="opsi1" class="checkbox" name="opsi1">
-          Opsi 1
+          <label>Opsi 1</label>
       </label>
-  
+
       <br> <!-- Ini akan memindahkan opsi berikutnya ke baris bawah -->
-  
+
       <label for="opsi2">
           <input type="checkbox" id="opsi2" class="checkbox" name="opsi2">
-          Opsi 2
+          <label>Opsi 2</label>
       </label>
-  
+
       <br>
-  
+
       <label for="opsi3">
           <input type="checkbox" id="opsi3" class="checkbox"  name="opsi3">
-          Opsi 3
+          <label>Opsi 3</label>
       </label>
     `;
   scrollCheckCointainer.style.color = "white"; // Ubah warna teks menjadi putih

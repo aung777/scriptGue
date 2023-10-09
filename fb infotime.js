@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         video scroll and timeInfo
 // @namespace    http://tampermonkey.net/
-// @version      10.1
+// @version      1.0.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://www.facebook.com/reel/*
@@ -27,46 +27,57 @@
 
   // Gaya CSS untuk tombol toggle switch
   const style = `
-    .sliderContainer span {
-      margin: auto;
-    }
-    .scrollCheckCointainer{
-      bottom: 15%;
-      left: 1%;
-    }
-    .sliderContainer {
-      width: 500px;
-    }
-    .slider-control {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 25px;
-      background: #d3d3d3;
-      outline: none;
-      opacity: 0.5;
-      -webkit-transition: .2s;
-      transition: opacity .2s;
-    }
+.ishidden {
+display: none;
+}
 
-    .slider-control:hover {
-      opacity: 1;
-    }
+.sliderContainer span {
+margin: auto;
+}
 
-    .slider-control::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 25px;
-      height: 25px;
-      background: #0866ff;
-      cursor: pointer;
-    }
+.scrollCheckCointainer {
+bottom: 15%;
+left: 1%;
+}
 
-    .slider-control::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      background: #0866ff;
-      cursor: pointer;
-    }
+.sliderContainer {
+width: 500px;
+}
+
+.slider-control {
+-webkit-appearance: none;
+width: 100%;
+height: 25px;
+background: #d3d3d3;
+outline: none;
+opacity: 0.5;
+-webkit-transition: .2s;
+transition: opacity .2s;
+}
+
+.slider-control:hover {
+opacity: 1;
+}
+
+.slider-control::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 25px;
+height: 25px;
+background: #0866ff;
+cursor: pointer;
+}
+
+.slider-control::-moz-range-thumb {
+width: 25px;
+height: 25px;
+background: #0866ff;
+cursor: pointer;
+}
+
+[type="checkbox"] {
+vertical-align: middle;
+}
     `;
 
   // Menambahkan gaya CSS ke head dokumen
@@ -79,24 +90,21 @@
   scrollCheckCointainer.innerHTML = `
        <h1>Pilih Opsi:</h1>
 
-      <label for="opsi1">
+      <div for="opsi1">
           <input type="checkbox" id="opsi1" class="checkbox" name="opsi1">
-          <label>Opsi 1</label>
-      </label>
+          <label class = "ishidden">Opsi 1</label>
+      </div>
 
-      <br> <!-- Ini akan memindahkan opsi berikutnya ke baris bawah -->
-
-      <label for="opsi2">
+      <div for="opsi2">
           <input type="checkbox" id="opsi2" class="checkbox" name="opsi2">
-          <label>Opsi 2</label>
-      </label>
+          <label class = "ishidden">Opsi 2</label>
+      </div>
 
-      <br>
 
-      <label for="opsi3">
+      <div for="opsi3">
           <input type="checkbox" id="opsi3" class="checkbox"  name="opsi3">
-          <label>Opsi 3</label>
-      </label>
+          <label class = "ishidden">Auto Next</label>
+      </div>
     `;
   scrollCheckCointainer.style.color = "white"; // Ubah warna teks menjadi putih
   scrollCheckCointainer.style.zIndex = "999";
@@ -149,15 +157,25 @@
     }
   });
 
-  scrollCheckbox.addEventListener("mouseover", mouseOver);
-  scrollCheckbox.addEventListener("mouseout", mouseOut);
+  const ckbox = document.querySelector(".scrollCheckCointainer");
+  ckbox.addEventListener("mouseover", mouseOver);
+  ckbox.addEventListener("mouseout", mouseOut);
+
+  const labels = document.querySelectorAll('.scrollCheckCointainer label');
 
   function mouseOver() {
-    document.getElementById("demo").style.color = "red";
+    document.querySelector('.scrollCheckCointainer label').classList.add('ishidden');
+    for (const label of labels) {
+      label.classList.remove('ishidden');
+
+    }
   }
 
   function mouseOut() {
-    document.getElementById("demo").style.color = "black";
+    for (const label of labels) {
+      label.classList.add('ishidden');
+
+    }
   }
 
   const sliderContainer = document.createElement("div"); // Membuat elemen div sebagai elemen induk
@@ -229,6 +247,18 @@
       .padStart(2, "0");
     return Minutes + ":" + Seconds;
   }
+  // ketika sudah load
+  window.onload = (event) =>{
+    // hilangkan muted
+    // if (document.querySelector("video[playsinline]").currentTime > 0.1) {
+    //   setTimeout(function() {
+    //     //your code to be executed after 1 second
+    //    document.querySelector("video[playsinline]").muted = false ;
+
+    //   }, 1000);
+    // }
+
+};
 
   function setupVideoEventListener(video) {
     video.addEventListener("timeupdate", info);

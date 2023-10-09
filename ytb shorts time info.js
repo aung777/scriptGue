@@ -168,15 +168,6 @@ window.onload = function () {
 
             setInterval(updateVidElem, 50);
 
-//             windloc = window.location.href;
-
-//             setInterval(() => {
-//                 if(windloc != window.location.href){
-//                     windloc = window.location.href;
-//                     xhr.abort();
-//                 }
-//             }, 20);
-
             udTimer = setInterval(AddUploadDateIfNeeded, 50);
 
             addEventListener("keydown", function (e) {
@@ -213,20 +204,21 @@ function updateVidElem() {
         return;
     }
 
-    $(vid).prop('volume', $('#byts-vol').val());
+    // $(vid).prop('volume', $('#byts-vol').val());
 
-    if (autoScrollVal == true) {
-        $(vid).removeAttr('loop');
-        $(vid).unbind('ended');
-        $(vid).on('ended', function () {
-            //console.log("ended");
-            $('#navigation-button-down').find("button").first().click();
-        });
-    }
-    else {
-        $(vid).attr('loop', true);
-        $(vid).unbind('ended');
-    }
+    // this vid atri
+    // if (autoScrollVal == true) {
+    //     $(vid).removeAttr('loop');
+    //     $(vid).unbind('ended');
+    //     $(vid).on('ended', function () {
+    //         //console.log("ended");
+    //         $('#navigation-button-down').find("button").first().click();
+    //     });
+    // }
+    // else {
+    //     $(vid).attr('loop', true);
+    //     $(vid).unbind('ended');
+    // }
 
 
     reel = $(vid).closest('ytd-reel-video-renderer');
@@ -314,130 +306,130 @@ function updateVidElem() {
 
 
     // Volume Slide
-    if ($(reel).find('#byts-vol').length === 0) {
-        if ($('#byts-vol').length === 0) {
-            $(reel).append('<input style="user-select: none; width: 100px; left: 0px; background-color: transparent; position: absolute; margin-top: ' + ($(reel).height() + 5) + 'px;" type="range" id="byts-vol" class="volslider" name="vol" min="0.0" max="1.0" step="0.01" value="' + savedVolume + '"></input>');
-        } else {
-            $(reel).append($('#byts-vol'));
-        }
-        bytsVol = $('#byts-vol');
+    // if ($(reel).find('#byts-vol').length === 0) {
+    //     if ($('#byts-vol').length === 0) {
+    //         $(reel).append('<input style="user-select: none; width: 100px; left: 0px; background-color: transparent; position: absolute; margin-top: ' + ($(reel).height() + 5) + 'px;" type="range" id="byts-vol" class="volslider" name="vol" min="0.0" max="1.0" step="0.01" value="' + savedVolume + '"></input>');
+    //     } else {
+    //         $(reel).append($('#byts-vol'));
+    //     }
+    //     bytsVol = $('#byts-vol');
 
-        $('#byts-vol').on('input change', function () {
-            $(vid).prop('volume', $(this).val());
+    //     $('#byts-vol').on('input change', function () {
+    //         $(vid).prop('volume', $(this).val());
 
-            GM.setValue('bytsVolume', $(this).val());
-        });
-    }
+    //         GM.setValue('bytsVolume', $(this).val());
+    //     });
+    // }
 
-    $('#byts-vol').css('margin-top', $(reel).height() + 5);
+    // $('#byts-vol').css('margin-top', $(reel).height() + 5);
 
 
     // AutoScroll
-    if ($(reel).find('#byts-autoscroll-div').length === 0) {
-        if ($('#byts-autoscroll-div').length === 0) {
-            let astc = '';
-            if (autoScrollVal) {
-                astc = ' checked';
-            }
-            $(reel).append('<div id="byts-autoscroll-div" style="user-select: none; display: flex; right: 0px; position: absolute; margin-top: ' + ($(reel).height() + 2) + 'px;"><div style="display: flex; margin-right: 5px; margin-top: 4px; color: white; font-size: 1.2rem;">Auto-Scroll: </div><label class="switch"><input id="byts-autoscroll-input" type="checkbox"' + astc + '><span class="slider round"></span></label></div>');
-        } else {
-            $(reel).append($('#byts-autoscroll-div'));
-        }
-        bytsVol = $('#byts-autoscroll-div');
+    // if ($(reel).find('#byts-autoscroll-div').length === 0) {
+    //     if ($('#byts-autoscroll-div').length === 0) {
+    //         let astc = '';
+    //         if (autoScrollVal) {
+    //             astc = ' checked';
+    //         }
+    //         $(reel).append('<div id="byts-autoscroll-div" style="user-select: none; display: flex; right: 0px; position: absolute; margin-top: ' + ($(reel).height() + 2) + 'px;"><div style="display: flex; margin-right: 5px; margin-top: 4px; color: white; font-size: 1.2rem;">Auto-Scroll: </div><label class="switch"><input id="byts-autoscroll-input" type="checkbox"' + astc + '><span class="slider round"></span></label></div>');
+    //     } else {
+    //         $(reel).append($('#byts-autoscroll-div'));
+    //     }
+    //     bytsVol = $('#byts-autoscroll-div');
 
-        $('#byts-autoscroll-input').on('input change', function () {
-            // console.log($(this).is(':checked'));
-            GM.setValue('bytsAutoscroll', $(this).is(':checked'));
+    //     $('#byts-autoscroll-input').on('input change', function () {
+    //         // console.log($(this).is(':checked'));
+    //         GM.setValue('bytsAutoscroll', $(this).is(':checked'));
 
-            if ($(this).is(':checked')) {
-                autoScrollVal = true;
-            }
-            else {
-                autoScrollVal = false;
-            }
-            if (autoScrollVal == true) {
-                $(vid).removeAttr('loop');
-                $(vid).unbind('ended');
-                $(vid).on('ended', function () {
-                    //console.log("ended");
-                    $('#navigation-button-down').find("button").first().click();
-                });
-            }
-            else {
-                $(vid).attr('loop', true);
-                $(vid).unbind('ended');
-            }
-            // $(vid).prop('volume', $(this).val());
-        });
-    }
+    //         if ($(this).is(':checked')) {
+    //             autoScrollVal = true;
+    //         }
+    //         else {
+    //             autoScrollVal = false;
+    //         }
+    //         if (autoScrollVal == true) {
+    //             $(vid).removeAttr('loop');
+    //             $(vid).unbind('ended');
+    //             $(vid).on('ended', function () {
+    //                 //console.log("ended");
+    //                 $('#navigation-button-down').find("button").first().click();
+    //             });
+    //         }
+    //         else {
+    //             $(vid).attr('loop', true);
+    //             $(vid).unbind('ended');
+    //         }
+    //         // $(vid).prop('volume', $(this).val());
+    //     });
+    // }
 
-    $('#byts-autoscroll-div').css('margin-top', $(reel).height() + 2);
+    // $('#byts-autoscroll-div').css('margin-top', $(reel).height() + 2);
 }
 
-async function AddUploadDateIfNeeded() {
-    if ($(vid).length === 0) {
-        return;
-    }
-    if ($(reel).length === 0) {
-        return;
-    }
+// async function AddUploadDateIfNeeded() {
+//     if ($(vid).length === 0) {
+//         return;
+//     }
+//     if ($(reel).length === 0) {
+//         return;
+//     }
 
-    if ($(reel).find('#channel-name').find('#byts-uploaddate').length === 0) {
-        clearInterval(udTimer);
-        try {
-            let reelId = $(reel).attr('id'); // for skipping when we switch to another video before the promise is done
+//     if ($(reel).find('#channel-name').find('#byts-uploaddate').length === 0) {
+//         clearInterval(udTimer);
+//         try {
+//             let reelId = $(reel).attr('id'); // for skipping when we switch to another video before the promise is done
 
-            let html = '';
-            //xhr.abort();
-            // xhr = await $.get(window.location.href, function (data) {
-            await $.get(window.location.href, function (data) {
-                try{
-                    if(reelId != $(reel).attr('id') || $(reel).find('#channel-name').find('#byts-uploaddate').length !== 0){
-                        //xhr.abort();
-                        udTimer = setInterval(AddUploadDateIfNeeded, 50);
-                        return;
-                    }
+//             let html = '';
+//             //xhr.abort();
+//             // xhr = await $.get(window.location.href, function (data) {
+//             await $.get(window.location.href, function (data) {
+//                 try{
+//                     if(reelId != $(reel).attr('id') || $(reel).find('#channel-name').find('#byts-uploaddate').length !== 0){
+//                         //xhr.abort();
+//                         udTimer = setInterval(AddUploadDateIfNeeded, 50);
+//                         return;
+//                     }
 
-                    html = data;
+//                     html = data;
 
-                    // let jsonString = html.match('(?<=var ytInitialData = ).*(?=;</script>)');
-                    let jsonString = html.substring(html.indexOf('var ytInitialData = '));
+//                     // let jsonString = html.match('(?<=var ytInitialData = ).*(?=;</script>)');
+//                     let jsonString = html.substring(html.indexOf('var ytInitialData = '));
 
-                    jsonString = jsonString.substring("var ytInitialData = ".length, jsonString.indexOf(';</script>'));
+//                     jsonString = jsonString.substring("var ytInitialData = ".length, jsonString.indexOf(';</script>'));
 
-                    let jObj = JSON.parse(jsonString);
-                    let ulDate = findValues(jObj, 'publishTimeText')[0].runs[1].text;
-                    let viewObj = findValues(jObj, 'viewCountText')[0].runs;
-                    let views = viewObj[0].text;
-                    let viewsText = viewObj[1].text;
+//                     let jObj = JSON.parse(jsonString);
+//                     let ulDate = findValues(jObj, 'publishTimeText')[0].runs[1].text;
+//                     let viewObj = findValues(jObj, 'viewCountText')[0].runs;
+//                     let views = viewObj[0].text;
+//                     let viewsText = viewObj[1].text;
 
-                    let displayText = '';
+//                     let displayText = '';
 
-                    views = views.replaceAll(',', '.');
+//                     views = views.replaceAll(',', '.');
 
-                    if (typeof ulDate == 'undefined') {
-                        ulDate = '';
-                    }
+//                     if (typeof ulDate == 'undefined') {
+//                         ulDate = '';
+//                     }
 
-                    if(typeof viewObj != 'undefined'){
-                        displayText = '<br>' + views + ' ' + viewsText;
-                    }
+//                     if(typeof viewObj != 'undefined'){
+//                         displayText = '<br>' + views + ' ' + viewsText;
+//                     }
 
-                    if(typeof ulDate != 'undefined' || typeof viewObj != 'undefined'){
-                        $(reel).find('#channel-name').find('#text').append('<span id="byts-uploaddate"><br>' + ulDate + displayText + '</span>');
-                    }
-                }catch{
-                    udTimer = setInterval(AddUploadDateIfNeeded, 50);
-                    return;
-                }
-            });
+//                     if(typeof ulDate != 'undefined' || typeof viewObj != 'undefined'){
+//                         $(reel).find('#channel-name').find('#text').append('<span id="byts-uploaddate"><br>' + ulDate + displayText + '</span>');
+//                     }
+//                 }catch{
+//                     udTimer = setInterval(AddUploadDateIfNeeded, 50);
+//                     return;
+//                 }
+//             });
 
-            udTimer = setInterval(AddUploadDateIfNeeded, 50);
+//             udTimer = setInterval(AddUploadDateIfNeeded, 50);
 
-        } catch (error) {
+//         } catch (error) {
 
-            udTimer = setInterval(AddUploadDateIfNeeded, 50);
-            return;
-        }
-    }
-}
+//             udTimer = setInterval(AddUploadDateIfNeeded, 50);
+//             return;
+//         }
+//     }
+// }

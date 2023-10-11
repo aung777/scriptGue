@@ -18,8 +18,18 @@
   // button.setAttribute('style', 'margin-left: 10px;');
   button.setAttribute("id", "loadmore");
   button.textContent = "🧩";
+
+  var textload = document.createElement("span");
+  textload.setAttribute("class", "textload");
+  textload.innerHTML = "0";
+  button.appendChild(textload);
+
+  var slash = document.createElement("span");
+  slash.innerHTML = "/";
+  button.appendChild(slash);
+
   var span = document.createElement("span");
-  span.setAttribute("class", "amountPages");
+  span.setAttribute("class", "totalpage");
   span.innerHTML = "0";
   button.appendChild(span);
 
@@ -44,7 +54,8 @@ width:50%;
 
   function showImages() {
     var elemenLoad = 0;
-    document.querySelector(".amountPages").textContent = elemenLoad;
+    var loadsuccess = 0;
+    document.querySelector(".totalpage").textContent = elemenLoad;
 
     // var imageBlock = document.querySelectorAll('.imageAdd');
     // imageBlock.forEach((elemen) => {
@@ -59,7 +70,7 @@ width:50%;
     //     // console.log(linkPerElement.href);
     //         getImage(linkPerElement.href, linkPerElement);
 
-    //     document.querySelector('.amountPages').textContent = ++elemenLoad;
+    //     document.querySelector('.totalpage').textContent = ++elemenLoad;
     // });
     function processElement(index) {
       if (index < elemensBlock.length) {
@@ -69,8 +80,9 @@ width:50%;
             // .height > 0
           getImage(linkPerElement.href, linkPerElement);
           delay = 1000;
+        document.querySelector(".textload").textContent = ++loadsuccess;
         }
-        document.querySelector(".amountPages").textContent = ++elemenLoad;
+        document.querySelector(".totalpage").textContent = ++elemenLoad;
 
         // if (elemensBlock.length >= 25) {
         //     setTimeout(function() {
@@ -93,8 +105,7 @@ width:50%;
     console.log(
       "error load image  : " + this.parentNode.querySelector("h2").textContent
     );
-    const parentElement = this.parentNode; // Dapatkan elemen yang mengandung gambar yang gagal dimuat
-    parentElement.parentNode.removeChild(parentElement); // Hapus elemen tersebut dari DOM
+    this.remove();
   }
 
   function getImage(urlpage, section) {

@@ -5,12 +5,14 @@
 // @description  edit something because original script make browser laggy, original script :BYTS(Better YouTube Shorts) - Greasyfork Edition by Taki7o7
 // @author       aung
 // @match        https://www.youtube.com/shorts/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
+// @icon         https://cdn.iconscout.com/icon/premium/png-512-thumb/seek-bar-9290231-7573397.png?f=webp&w=256
 // @require      http://code.jquery.com/jquery-latest.js
 // @run-at       document-idle
 // @grant        GM_addStyle
 // @grant        GM.getValue
 // @grant        GM.setValue
+// @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/fb%20infotime.js
+// @downloadURL https://raw.githubusercontent.com/aung777/scriptGue/main/fb%20infotime.js
 // ==/UserScript==
 
 
@@ -168,7 +170,7 @@ window.onload = function () {
 
             setInterval(updateVidElem, 50);
 
-            udTimer = setInterval(AddUploadDateIfNeeded, 50);
+            // udTimer = setInterval(AddUploadDateIfNeeded, 50);
 
             addEventListener("keydown", function (e) {
                 switch (e.key.toUpperCase()) {

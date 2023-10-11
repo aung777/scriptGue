@@ -36,12 +36,13 @@ margin: auto;
 }
 
 .scrollCheckCointainer {
+opacity: 50%;
 bottom: 15%;
 left: 1%;
 }
 
 .sliderContainer {
-width: 500px;
+width: 545px;
 }
 
 .slider-control {
@@ -103,7 +104,7 @@ vertical-align: middle;
 
       <div for="opsi3">
           <input type="checkbox" id="opsi3" class="checkbox"  name="opsi3">
-          <label class = "ishidden">Auto Next</label>
+          <label class = "ishidden">Opsi 3</label>
       </div>
     `;
   scrollCheckCointainer.style.color = "white"; // Ubah warna teks menjadi putih
@@ -278,9 +279,7 @@ vertical-align: middle;
         video.currentTime = setcurrentTime;
       }
     });
-    window.addEventListener("resize", function (event) {
-      console.log(video.parentElement.clientWidth);
-    });
+    
 
     function info() {
       // console.log(
@@ -300,7 +299,9 @@ vertical-align: middle;
 
     function myHandler(e) {
       //console.log("selesai : " + this.duration)
-      document.querySelector('[aria-label="Kartu Berikutnya"]').click();
+      setTimeout(function() {
+        document.querySelector('[aria-label="Kartu Berikutnya"]').parentElement.click()
+      },1000)
     }
   }
 
@@ -326,6 +327,14 @@ vertical-align: middle;
 
   // Mulai memantau subtree dokumen
   observer.observe(document, { subtree: true, childList: true });
+
+  
+  window.addEventListener("resize", function (event) {
+    if (document.querySelector('video').offsetWidth) {
+      console.log(document.querySelector('video').offsetWidth);
+    
+    }
+  });
 
   // Panggil fungsi pertama kali untuk menangani video yang sudah ada saat halaman dimuat
   handleVideoChanges();

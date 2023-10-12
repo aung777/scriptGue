@@ -7,6 +7,7 @@
 // @downloadURL https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20other%20pages.js
 // @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20other%20pages.js
 // @match        https://nhentai.net/tag/*
+// @match        https://nhentai.net/search/*
 // @icon         https://www.freeiconspng.com/thumbs/details-icon/details-icon-png-cc-by-3-0--it-1.png
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
@@ -67,12 +68,12 @@
     }
     function amountElementInPage() {
         var elemen = document.querySelectorAll(".gallery");
-        return elemen.length; 
+        return elemen.length;
     }
     function loadOtherPage(urlpage, pagenumber) {
         GM_xmlhttpRequest({
             method: "GET",
-            url: 'https://nhentai.net/tag/nakadashi/popular-today?page=3',
+            url: urlpage + pagenumber,
             onload: function (response) {
                 // DO ALL RESPONSE PROCESSING HERE...
                 const parser = new DOMParser();
@@ -88,7 +89,7 @@
                     var temptext2 = " ▶️ "+ amountElementInPage();
                     appendtext(btnthis, "elemenInPage" , temptext2)
                 }
-                
+
 
 
 
@@ -125,7 +126,7 @@
                         "berhasil load page: ",
                         pagenumber
                     );
-                 
+
                 }
 
             }

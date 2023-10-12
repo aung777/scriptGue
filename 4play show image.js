@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         4play show image
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  try to take over the world!
-// @author       You
+// @author       aing
 // @match        https://4play.to/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=4play.to
 // @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/4play%20show%20image.js
@@ -25,11 +25,11 @@
   button.appendChild(textload);
 
   var slash = document.createElement("span");
-  slash.innerHTML = "/";
+  slash.innerHTML = " / ";
   button.appendChild(slash);
 
   var span = document.createElement("span");
-  span.setAttribute("class", "totalpage");
+  span.setAttribute("id", "totalpage");
   span.innerHTML = "0";
   button.appendChild(span);
 
@@ -55,16 +55,19 @@ width:50%;
   function showImages() {
     var elemenLoad = 0;
     var loadsuccess = 0;
-    document.querySelector(".totalpage").textContent = elemenLoad;
 
-    // var imageBlock = document.querySelectorAll('.imageAdd');
-    // imageBlock.forEach((elemen) => {
-    //     elemen.remove()
-    // })
+    var imageBlock = document.querySelectorAll(".textError");
+    if (Image) {
+      imageBlock.forEach((elemen) => {
+        elemen.remove();
+      });
+    }
 
     var elemensBlock = document.querySelectorAll(
       '[role="article"] a.DiscussionListItem-main'
     );
+    document.querySelector("#totalpage").innerHTML = elemensBlock.length;
+
     // elemensBlock.forEach((linkPerElement) => {
     //     // Mengganti atribut "src" dengan nilai dari atribut "data-src"
     //     // console.log(linkPerElement.href);
@@ -77,12 +80,11 @@ width:50%;
         var linkPerElement = elemensBlock[index];
         var delay = 0;
         if (!elemensBlock[index].querySelector(".imageAdd")) {
-            // .height > 0
+          // .height > 0
           getImage(linkPerElement.href, linkPerElement);
           delay = 1000;
-        document.querySelector(".textload").textContent = ++loadsuccess;
+          document.querySelector(".textload").innerHTML = ++loadsuccess;
         }
-        document.querySelector(".totalpage").textContent = ++elemenLoad;
 
         // if (elemensBlock.length >= 25) {
         //     setTimeout(function() {
@@ -103,8 +105,16 @@ width:50%;
 
     // console.log('Kesalahan saat memuat gambar.');
     console.log(
-      "error load image  : " + this.parentNode.querySelector("h2").textContent
+      "error load image  : \n" +
+        this.parentNode.querySelector("h2").textContent +
+        "\n" +
+        this.src
     );
+    var text = document.createElement("span");
+    text.setAttribute("class", "textError");
+    text.innerHTML = this.src + "<bt> \n";
+    this.parentNode.parentNode.parentNode.appendChild(text);
+
     this.remove();
   }
 

@@ -13,6 +13,20 @@
 
 (function () {
     'use strict';
+
+    const style = `
+    button#loadmore {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+    }
+        `;
+    
+      // Menambahkan gaya CSS ke head dokumen
+      const styleElement = document.createElement("style");
+      styleElement.innerHTML = style;
+      document.head.appendChild(styleElement);
+
     // var gatepage = function (url,callback) {
     //     GM_xmlhttpRequest({
     //         method: 'GET',

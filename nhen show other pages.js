@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.0.1
 // @description  try to take over the world!
-// @author       You
+// @author       aing
 // @downloadURL https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20other%20pages.js
 // @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20other%20pages.js
 // @match        https://nhentai.net/tag/*
@@ -18,14 +18,14 @@
     button#loadmore {
         position: fixed;
         left: 0;
-        bottom: 0;
+        bottom: 2rem;
     }
         `;
-    
-      // Menambahkan gaya CSS ke head dokumen
-      const styleElement = document.createElement("style");
-      styleElement.innerHTML = style;
-      document.head.appendChild(styleElement);
+
+    // Menambahkan gaya CSS ke head dokumen
+    const styleElement = document.createElement("style");
+    styleElement.innerHTML = style;
+    document.head.appendChild(styleElement);
 
     // var gatepage = function (url,callback) {
     //     GM_xmlhttpRequest({
@@ -40,7 +40,7 @@
     button.setAttribute('id', 'loadmore');
     var span = document.createElement('span');
     span.setAttribute('class', 'plus');
-    span.innerHTML = '+ : ';
+    span.innerHTML = '➕ : ';
     button.appendChild(span);
 
     document.querySelector('.pagination').prepend(button);
@@ -65,51 +65,89 @@
     function getlinkweb() {
         return document.querySelector('.page').href.split('=')[0] + '=';
     }
+    function amountElementInPage() {
+        var elemen = document.querySelectorAll(".gallery");
+        return elemen.length; 
+    }
     function loadOtherPage(urlpage, pagenumber) {
         GM_xmlhttpRequest({
             method: "GET",
-            url: urlpage + pagenumber,
+            url: 'https://nhentai.net/tag/nakadashi/popular-today?page=3',
             onload: function (response) {
                 // DO ALL RESPONSE PROCESSING HERE...
                 const parser = new DOMParser();
                 const htmlDocument = parser.parseFromString(response.responseText, "text/html");
-                const sections = htmlDocument.documentElement.querySelectorAll(".gallery");
+                const sections = Array.from(htmlDocument.querySelectorAll(".gallery"));
 
-                var span = document.createElement('span');
-                span.setAttribute('class', 'textplus');
-                span.innerHTML = pagenumber + ', ';
-                document.querySelector('.btnplus').appendChild(span);
+                if(!document.querySelector(".textCurrent")){
+                    var btnthis = document.querySelector('.btnplus')
+                    appendtext(btnthis, "textCurrent" ,currentpage())
+                    appendtext(btnthis, "textTO" ,"")
+                    var temptext = "/"+ lastpage();
+                    appendtext(btnthis, "textMax" , temptext)
+                    var temptext2 = " ▶️ "+ amountElementInPage();
+                    appendtext(btnthis, "elemenInPage" , temptext2)
+                }
+                
+
+
 
                 // document.querySelector('.index-container').appendChild(document.createElement("h1").appendChild(document.createTextNode('Page : ' + pagenumber)));
 
+                if (sections.length < 1) {
+                    console.log(
+                        "url: " +
+                        urlpage ,"\n" +
 
-                sections.forEach((section) => {
-                    document.querySelector('.index-container').appendChild(section);
-                })
+                        "section length : " +
+                        sections.length ,"\n"
+                         +"isi respon : " +
+                         response.responseText ,"\n"
+                    );
+                    document.querySelector('.textTO').textContent = "- " + pagenumber + "error" ;
 
-                console.log(
-                    "GM_xmlhttpRequest() response is:\n",
+                }else {
                     sections.forEach((section) => {
-                        section.textContent;
+                        document.querySelector('.index-container').appendChild(section);
                     })
-                );
-                reloadImage();
-                console.log(
-                    "berhasil load page: ",
-                    pagenumber
-                );
+                    document.querySelector('.textTO').textContent = "-" + pagenumber;
+                    document.querySelector('.elemenInPage').textContent = " ▶️ "+ amountElementInPage();
+
+                    // console.log(
+
+                    //     " GM_xmlhttpRequest() response is:\n",
+                    //     sections.forEach((section) => {
+                    //         section;
+                    //     })
+                    // );
+                    reloadImage();
+                    console.log(
+                        "berhasil load page: ",
+                        pagenumber
+                    );
+                 
+                }
+
             }
         });
     }
     var pageLoadNow = currentpage();
 
+    function appendtext(parentElement,className,text) {
+        var span = document.createElement('span');
+        span.setAttribute('class', className);
+        span.innerHTML = text;
+        parentElement.appendChild(span);
+
+    }
+
     document.querySelector('.btnplus').addEventListener('click', () => {
         if (pageLoadNow++ <= lastpage()) {
             loadOtherPage(getlinkweb(), (pageLoadNow))
-            console.log(
-                "berhasil load page: ",
-                pageLoadNow
-            );
+            // console.log(
+            //     "berhasil load page: ",
+            //     pageLoadNow
+            // );
         }
 
     })

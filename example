@@ -1,0 +1,485 @@
+// ==UserScript==
+// @name          nHentai-Enhanced-Userscript
+// @description   Enhance your nHentai experience.
+// @version       0.0.2
+// @author        Hentai-Club
+// @match         https://nhentai.net/*
+// @noframes
+// ==/UserScript==
+(() => {
+  var x = {
+      954: () => {
+        (() => {
+          const u = `
+    /* \u56FA\u5B9A\u5C0E\u884C\u689D */
+    nav[role="navigation"] {
+      display: block;
+      position: fixed;
+      top: 0;
+      z-index: 999;
+      width: 100%;
+      margin-top: 0 !important;
+    }
+    #content {
+      padding-top: 50px;
+    }
+
+    /* \u63D0\u9AD8\u641C\u5C0B\u6B04 Placeholder \u7684\u6587\u5B57\u984F\u8272 */
+    .search input[type="search"]::placeholder {
+      color: #fff;
+    }
+
+    /* \u96B1\u85CF\u5EE3\u544A */
+    .advertisement {
+      display: none;
+    }
+
+    /* \u96B1\u85CF\u9ED1\u540D\u55AE\u5C01\u9762 */
+    .cover-blacklisted {
+      opacity: .1;
+      -webkit-filter: blur(5px);
+      filter: blur(5px);
+      will-change: filter;
+      transition: opacity 0.3s;
+    }
+
+    .cover-blacklisted:hover {
+      opacity: 1;
+      filter: blur(0px);
+    }
+
+    /* PC */
+    @media (min-width: 1200px) {
+      /* \u5C01\u9762\u7E2E\u653E */
+      .gallery,
+      .thumb-container {
+        transition: transform 0.3s, opacity 0.3s, filter 0.3s, -webkit-filter 0.3s;
+      }
+
+      .gallery:hover,
+      .thumb-container:hover {
+        z-index: 10;
+        transform: scale(1.3);
+      }
+
+      .gallery.blacklisted:hover {
+        opacity: .5;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 1200px) {
+      .single-page-img {
+        width: 100%;
+      }
+    }
+  `,
+            d = document.createElement("style");
+          d.appendChild(document.createTextNode(u)),
+            document.body.appendChild(d);
+        })();
+      },
+    },
+    w = {};
+  function _(u) {
+    var d = w[u];
+    if (d !== void 0) return d.exports;
+    var h = (w[u] = { exports: {} });
+    return x[u](h, h.exports, _), h.exports;
+  }
+  var Q = {};
+  (() => {
+    "use strict";
+    var u = (n, e, t) => {
+        if (!e.has(n)) throw TypeError("Cannot " + t);
+      },
+      d = (n, e, t) => (
+        u(n, e, "read from private field"), t ? t.call(n) : e.get(n)
+      ),
+      h = (n, e, t) => {
+        if (e.has(n))
+          throw TypeError("Cannot add the same private member more than once");
+        e instanceof WeakSet ? e.add(n) : e.set(n, t);
+      },
+      C = (n, e, t, a) => (
+        u(n, e, "write to private field"), a ? a.call(n, t) : e.set(n, t), t
+      ),
+      b = (n, e, t) =>
+        new Promise((a, r) => {
+          var i = (o) => {
+              try {
+                s(t.next(o));
+              } catch (l) {
+                r(l);
+              }
+            },
+            c = (o) => {
+              try {
+                s(t.throw(o));
+              } catch (l) {
+                r(l);
+              }
+            },
+            s = (o) =>
+              o.done ? a(o.value) : Promise.resolve(o.value).then(i, c);
+          s((t = t.apply(n, e)).next());
+        }),
+      g;
+    const k = "/api/gallery",
+      N = "https://i.nhentai.net/galleries",
+      E = { j: "jpg", p: "png", g: "gif" };
+    function A(n) {
+      return b(this, null, function* () {
+        if (!n) return new y();
+        const t = yield (yield fetch(`${k}/${String(n)}`)).json();
+        return new y(t);
+      });
+    }
+    class y {
+      constructor(e) {
+        h(this, g, void 0), e && C(this, g, e);
+      }
+      get galleyInfo() {
+        if (d(this, g)) return d(this, g);
+        throw new Error(
+          "\u8ACB\u5728\u5275\u5EFA\u5BE6\u4F8B\u7269\u4EF6\u6642\u50B3\u5165 gid\u3002"
+        );
+      }
+      mediaPageUrl(e) {
+        const t = String(this.galleyInfo.media_id),
+          a = String(e),
+          r = E[this.galleyInfo.images.pages[e - 1].t];
+        return `${N}/${t}/${a}.${r}`;
+      }
+      static getDocument(e) {
+        return b(
+          this,
+          arguments,
+          function* ({ path: t, params: a, cacheMode: r = "default" }) {
+            const i = "?" + new URLSearchParams(a).toString(),
+              c = t + i,
+              o = yield (yield fetch(c, { cache: r })).text();
+            return new DOMParser().parseFromString(
+              o.replaceAll("data-src", "src"),
+              "text/html"
+            );
+          }
+        );
+      }
+    }
+    g = new WeakMap();
+    const D = { __scrollTarget: 65 };
+    function q(n, e = 300) {
+      let t, a, r;
+      return function () {
+        const i = this,
+          c = arguments;
+        t
+          ? (clearTimeout(a),
+            (a = setTimeout(() => {
+              Date.now() - r >= e && (n.apply(i, c), (r = Date.now()));
+            }, Math.max(e - (Date.now() - r), 0))))
+          : (n.apply(i, c), (r = Date.now()), (t = !0));
+      };
+    }
+    var O = Object.defineProperty,
+      T = Object.defineProperties,
+      M = Object.getOwnPropertyDescriptors,
+      P = Object.getOwnPropertySymbols,
+      I = Object.prototype.hasOwnProperty,
+      L = Object.prototype.propertyIsEnumerable,
+      S = (n, e, t) =>
+        e in n
+          ? O(n, e, {
+              enumerable: !0,
+              configurable: !0,
+              writable: !0,
+              value: t,
+            })
+          : (n[e] = t),
+      f = (n, e) => {
+        for (var t in e || (e = {})) I.call(e, t) && S(n, t, e[t]);
+        if (P) for (var t of P(e)) L.call(e, t) && S(n, t, e[t]);
+        return n;
+      },
+      F = (n, e) => T(n, M(e)),
+      $ = (n, e, t) =>
+        new Promise((a, r) => {
+          var i = (o) => {
+              try {
+                s(t.next(o));
+              } catch (l) {
+                r(l);
+              }
+            },
+            c = (o) => {
+              try {
+                s(t.throw(o));
+              } catch (l) {
+                r(l);
+              }
+            },
+            s = (o) =>
+              o.done ? a(o.value) : Promise.resolve(o.value).then(i, c);
+          s((t = t.apply(n, e)).next());
+        });
+    class m {
+      constructor(e) {
+        const t = new URLSearchParams(document.location.search),
+          a = t.get("page");
+        (this.currentPath = ""),
+          (this.currentPageNumber = a !== null ? a : "1"),
+          (this.blacklisted_tags =
+            unsafeWindow._n_app.options.blacklisted_tags),
+          (this.isLoading = !1),
+          (this.cacheMode = "default"),
+          (this.searchParams = t),
+          console.log(`${e} loaded.`);
+      }
+      getCache() {
+        const e = window.localStorage.getItem("nHentai-Enhanced-Userscript");
+        return e === null ? null : JSON.parse(e);
+      }
+      updateCache(e) {
+        if (this.currentPath === "/favorites/") return;
+        const t = this.getCache(),
+          a = { [this.currentPath]: { [this.currentPageNumber]: e } },
+          r =
+            t !== null
+              ? { caches: f(f({}, t.caches), a) }
+              : { caches: f({}, a) };
+        window.localStorage.setItem(
+          "nHentai-Enhanced-Userscript",
+          JSON.stringify(r)
+        );
+      }
+      infiniteScroll(e, t, a = ".gallery") {
+        const r = document.querySelector(e);
+        r !== null &&
+          ((this.currentPath = t.path),
+          this.enableAutoForceCache(r, t),
+          this.enableInfiniteScroll(this.nextPageCallback(r, t, a)),
+          this.movePagination());
+      }
+      enableAutoForceCache(e, t) {
+        const a = e.querySelectorAll(".caption"),
+          r = [];
+        for (const s of a) r.push(s.innerHTML);
+        const i = this.getCache();
+        i !== null &&
+          (() => {
+            const s = i.caches;
+            if (!Object.keys(s).some((p) => t.path === p)) return;
+            const o = s[t.path];
+            !Object.keys(o).some((p) => this.currentPageNumber === p) ||
+              !s[t.path][this.currentPageNumber].every((p, v) => r[v] === p) ||
+              (this.cacheMode = "force-cache");
+          })(),
+          this.updateCache(r),
+          console.log("Cache Mode:", this.cacheMode);
+      }
+      enableInfiniteScroll(e, t = !0, a = 300) {
+        const r = (c) => () => {
+            if (this.isLoading) return;
+            const s = window.scrollY,
+              o = document.body.scrollHeight - document.body.clientHeight;
+            s < o * (D.__scrollTarget / 100) || c();
+          },
+          i = t ? q(r(e), a) : r(e);
+        window.addEventListener("scroll", i);
+      }
+      nextPageCallback(e, { path: t, params: a }, r) {
+        return () =>
+          $(this, null, function* () {
+            this.isLoading = !0;
+            const i = String(Number(this.currentPageNumber) + 1),
+              s = (yield y.getDocument({
+                path: t,
+                params: F(f({}, a), { page: i }),
+                cacheMode: this.cacheMode,
+              })).querySelectorAll(r);
+            if (s.length !== 0) {
+              if (this.blacklisted_tags)
+                for (const o of s) {
+                  const l = o.getAttribute("data-tags");
+                  if (l === null) continue;
+                  const p = l.split(" ");
+                  for (const v of this.blacklisted_tags)
+                    p.some((V) => V === String(v)) &&
+                      o.classList.add("blacklisted");
+                }
+              for (const o of s) e.appendChild(o);
+              (this.currentPageNumber = i), (this.isLoading = !1);
+            }
+          });
+      }
+      movePagination() {
+        const e = document.querySelector("section.pagination"),
+          t = document.querySelector("#content");
+        if (e === null || t === null) return;
+        t.prepend(e);
+        const a = e.querySelector(".ios-mobile-webkit-bottom-spacing");
+        a !== null && a.remove();
+      }
+    }
+    function B() {
+      new m("Homepage").infiniteScroll(".index-container:not(.index-popular)", {
+        path: "/",
+      });
+    }
+    function H() {
+      const n = new m("Search");
+      n.infiniteScroll(".index-container", {
+        path: "/search/",
+        params: { q: n.searchParams.get("q") },
+      });
+    }
+    function R() {
+      const n = new m("Label"),
+        e = window.location.pathname.split("/");
+      n.infiniteScroll(".index-container", { path: `/${e[1]}/${e[2]}` });
+    }
+    function U() {
+      const n = new m("Favorites"),
+        e = n.searchParams.get("q"),
+        t = "/favorites/",
+        a = e === null ? { path: t } : { path: t, params: { q: e } };
+      n.infiniteScroll("#favcontainer", a, ".gallery-favorite");
+    }
+    var G = (n, e, t) =>
+      new Promise((a, r) => {
+        var i = (o) => {
+            try {
+              s(t.next(o));
+            } catch (l) {
+              r(l);
+            }
+          },
+          c = (o) => {
+            try {
+              s(t.throw(o));
+            } catch (l) {
+              r(l);
+            }
+          },
+          s = (o) =>
+            o.done ? a(o.value) : Promise.resolve(o.value).then(i, c);
+        s((t = t.apply(n, e)).next());
+      });
+    function W(n) {
+      return G(this, null, function* () {
+        return new Promise((e) => {
+          setTimeout(() => e(), n);
+        });
+      });
+    }
+    var z = (n, e, t) =>
+      new Promise((a, r) => {
+        var i = (o) => {
+            try {
+              s(t.next(o));
+            } catch (l) {
+              r(l);
+            }
+          },
+          c = (o) => {
+            try {
+              s(t.throw(o));
+            } catch (l) {
+              r(l);
+            }
+          },
+          s = (o) =>
+            o.done ? a(o.value) : Promise.resolve(o.value).then(i, c);
+        s((t = t.apply(n, e)).next());
+      });
+    function Y(n) {
+      const e = new m("Gallery");
+      n.split("/").length === 4 ? J(n) : j(e.searchParams);
+    }
+    function J(n) {
+      var e, t;
+      const a = document.createElement("a");
+      a.setAttribute(
+        "style",
+        "transition: all .4s;box-shadow: 0 0 30px 1px #ed2553;"
+      ),
+        (a.className = "btn btn-primary"),
+        (a.href = n + "1/?singlepage=true");
+      const r = document.createElement("i");
+      r.className = "fas fa-book-open";
+      const i = document.createElement("span");
+      if (
+        ((i.className = "text"),
+        (i.innerHTML = "&nbsp; Read in a page"),
+        a.appendChild(r),
+        a.appendChild(i),
+        (e = document.querySelector(".buttons")) == null || e.prepend(a),
+        document.querySelectorAll(".blacklisted").length > 0)
+      ) {
+        if (
+          confirm(`Warning: Detected blacklisted tags 
+ Click "OK to continue" / "Cancel to leave".`)
+        )
+          return (t = document.querySelector("#cover")) == null
+            ? void 0
+            : t.classList.add("cover-blacklisted");
+        window.location.href = "/";
+      }
+    }
+    function j(n) {
+      return z(this, null, function* () {
+        if (n.get("singlepage") === null) return;
+        document.querySelector("#content").style.display = "none";
+        const e = document.createElement("div");
+        document.body.appendChild(e);
+        const t = window.location.pathname.split("/")[2],
+          a = yield A(t);
+        for (let r = 0; r < a.galleyInfo.num_pages; r++) {
+          const i = r + 1,
+            c = document.createElement("div");
+          (c.className = "text"), (c.innerHTML = String(i));
+          const s = document.createElement("img");
+          (s.className = "single-page-img"),
+            (s.loading = "lazy"),
+            (s.title = `Page ${i}`),
+            (s.src = a.mediaPageUrl(i)),
+            e.append(c),
+            e.appendChild(s),
+            yield W(500);
+        }
+      });
+    }
+    var X = _(954);
+    function K() {
+      const { pathname: n } = window.location,
+        e = [
+          "tag",
+          "artist",
+          "character",
+          "parody",
+          "group",
+          "language",
+          "category",
+        ];
+      switch (!0) {
+        case n === "/":
+          B();
+          break;
+        case n === "/search/":
+          H();
+          break;
+        case e.some((t) => n.includes(`/${t}/`)):
+          R();
+          break;
+        case n === "/favorites/":
+          U();
+          break;
+        case n.includes("/g/"):
+          Y(n);
+          break;
+      }
+    }
+    K();
+  })();
+})();

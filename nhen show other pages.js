@@ -4,8 +4,8 @@
 // @version      1.0.1
 // @description  try to take over the world!
 // @author       You
-// @downloadURL https://gitlab.com/skrip1/skripgue/-/raw/main/add%20elemen.js?ref_type=heads
-// @updateURL https://gitlab.com/skrip1/skripgue/-/raw/main/add%20elemen.js?ref_type=heads
+// @downloadURL https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20other%20pages.js
+// @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20other%20pages.js
 // @match        https://nhentai.net/tag/*
 // @icon         https://www.freeiconspng.com/thumbs/details-icon/details-icon-png-cc-by-3-0--it-1.png
 // @grant       GM_xmlhttpRequest

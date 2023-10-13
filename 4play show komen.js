@@ -43,11 +43,14 @@
     styleElement.innerHTML = style;
     document.head.appendChild(styleElement);
 
-    window.onload = function () {
-        // Buat elemen tombol
-        var button = document.createElement('button');
+    var button = document.createElement('button');
         button.id="floatingButtonKomen"
         button.textContent = 'auto komen';
+        document.body.appendChild(button);
+
+    window.onload = function () {
+        // Buat elemen tombol
+        
 
         // Tambahkan event listener untuk menangani klik tombol
         button.addEventListener('click', function () {
@@ -93,12 +96,18 @@
         var scrubberElement = document.querySelector('.item-scrubber');
 
         // Pastikan elemen ".Scrubber" ditemukan sebelum menambahkan tombol
-        document.body.appendChild(button);
+        
         // if (scrubberElement) {
         //     scrubberElement.appendChild(button);
         // } else {
         //     console.error('Elemen dengan kelas ".Scrubber" tidak ditemukan.');
         // }
+        keAtas();
+
+        var linkUnlock = document.querySelector(".reply2see.unlocked");
+        if (linkUnlock) {
+            linkUnlock.scrollIntoView();            
+        }
     }
 
     function keAtas() {

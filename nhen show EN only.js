@@ -15,7 +15,7 @@
   
     // Membuat elemen tombol
     const toggleButton = document.createElement("button");
-    toggleButton.textContent = "show ALL";
+    toggleButton.textContent = "ALL";
   
     // Inisialisasi status tersembunyi
     let isHidden = false;
@@ -44,7 +44,7 @@
       // Memperbarui status tersembunyi
       isHidden = !isHidden;
   
-      toggleButton.innerText = isHidden ? "EN only" : "show ALL";
+      toggleButton.innerText = isHidden ? "EN" : "ALL";
     });
   
     // Menambahkan tombol ke body halaman

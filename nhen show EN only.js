@@ -7,7 +7,8 @@
 // @icon         https://cdn-icons-png.flaticon.com/128/75/75277.png
 // @downloadURL https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20EN%20only.js
 // @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20EN%20only.js
-// @grant        none
+// @grant       GM.setValue
+// @grant       GM.getValue
 // ==/UserScript==
 
 (function () {
@@ -19,12 +20,15 @@
   
     // Inisialisasi status tersembunyi
     let isHidden = false;
+    isHidden = GM.getValue('isHidden', false);
     const myInterval = setInterval(makeHidden, 100);
   
     function makeHidden() {
       const elementsWithout12227 = document.querySelectorAll(
         '.gallery:not([data-tags*="12227"])'
       );
+      toggleButton.innerText = isHidden ? "EN" : "ALL";
+
   
       elementsWithout12227.forEach((element) => {
         if (isHidden) {
@@ -43,6 +47,7 @@
   
       // Memperbarui status tersembunyi
       isHidden = !isHidden;
+      GM.setValue("isHidden", isHidden);
   
       toggleButton.innerText = isHidden ? "EN" : "ALL";
     });

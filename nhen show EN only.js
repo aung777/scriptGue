@@ -1,10 +1,11 @@
 // ==UserScript==
-// @name         nhen show EN only
-// @version      1.0.1
-// @description  try to take over the world!
-// @author       AING
-// @match        https://nhentai.net/*
-// @icon         https://cdn-icons-png.flaticon.com/128/75/75277.png
+// @name        nhen show EN only
+// @version     1.0.1
+// @description try to take over the world!
+// @author      AING
+// @match       https://nhentai.net/*
+// @exclude     https://nhentai.net/g/*
+// @icon        https://cdn-icons-png.flaticon.com/128/75/75277.png
 // @downloadURL https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20EN%20only.js
 // @updateURL   https://raw.githubusercontent.com/aung777/scriptGue/main/nhen%20show%20EN%20only.js
 // @grant       GM.setValue

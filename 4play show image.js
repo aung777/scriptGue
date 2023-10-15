@@ -56,16 +56,21 @@ width:50%;
     var elemenLoad = 0;
     var loadsuccess = 0;
 
-    var imageBlock = document.querySelectorAll(".textError");
-    if (Image) {
-      imageBlock.forEach((elemen) => {
-        elemen.remove();
-      });
-    }
+    // var imageBlock = document.querySelectorAll(".textError");
+    // if (imageBlock) {
+    //   imageBlock.forEach((elemen) => {
+    //     elemen.remove();
+    //   });
+    // }
 
     var elemensBlock = document.querySelectorAll(
       '[role="article"] a.DiscussionListItem-main'
     );
+    // elemensBlock.forEach((elemen)=>{
+    //   removeChild(elemen,'.textError')
+    // })
+
+
     document.querySelector("#totalpage").innerHTML = elemensBlock.length;
 
     // elemensBlock.forEach((linkPerElement) => {
@@ -79,6 +84,12 @@ width:50%;
       if (index < elemensBlock.length) {
         var linkPerElement = elemensBlock[index];
         var delay = 0;
+
+        if (elemensBlock[index].querySelector(".textError")) {
+        removeChild(linkPerElement,".textError")
+        removeChild(linkPerElement,".imageAdd")
+          
+        }
         if (!elemensBlock[index].querySelector(".imageAdd")) {
           // .height > 0
           getImage(linkPerElement.href, linkPerElement);
@@ -100,6 +111,16 @@ width:50%;
 
     processElement(0);
   }
+  function removeChild(parentnode,childremove) {
+    var childsremove = parentnode.querySelectorAll(childremove);
+    if (childsremove) {
+      childsremove.forEach((elemen) => {
+        elemen.remove();
+      });
+    }
+
+    
+  }
   function handleImageError() {
     // Fungsi ini akan dijalankan saat terjadi kesalahan saat memuat gambar.
 
@@ -112,8 +133,8 @@ width:50%;
     );
     var text = document.createElement("span");
     text.setAttribute("class", "textError");
-    text.innerHTML = this.src + "<bt> \n";
-    this.parentNode.parentNode.parentNode.appendChild(text);
+    text.innerHTML = this.src + "<br> \n";
+    this.parentNode.appendChild(text);
 
     this.remove();
   }
@@ -149,14 +170,17 @@ width:50%;
         // var areaImage = document.createElement('di');
         // areaImage.setAttribute('class', 'areaImage');
         // section.appendChild(areaImage);
-        if (elemens) {
+        if (elemens.length > 0) {
           elemens.forEach((elemen) => {
             elemen.classList.add("imageAdd");
             elemen.onerror = handleImageError;
+            elemen.setAttribute("loading", "lazy");
             section.appendChild(elemen);
             // section.parentNode.innerHTML;
             // console.dir(section)
+            // console.log("length : " + elemens.length);
           });
+          section.querySelector('.item-terminalPost').textContent = "["+elemens.length+"]";
         } else {
           console.log("kosong : " + response.responseText);
         }

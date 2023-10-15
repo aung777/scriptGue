@@ -180,9 +180,14 @@ width:50%;
             // console.dir(section)
             // console.log("length : " + elemens.length);
           });
-          section.querySelector('.item-terminalPost').textContent = "["+elemens.length+"]";
+          // section.querySelector('.item-terminalPost').textContent = "["+elemens.length+"]";
+          section.parentNode.querySelector('.DiscussionListItem-count span:not(.visually-hidden)').textContent = "["+elemens.length+"]";
+
         } else {
-          console.log("kosong : " + response.responseText);
+          section.parentNode.querySelector('.DiscussionListItem-count span:not(.visually-hidden)').textContent = "[0]";
+          console.log("kosong : \n" +
+          section.querySelector(".DiscussionListItem-title").textContent 
+          + response.responseText);
         }
 
         // console.log(

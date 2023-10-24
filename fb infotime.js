@@ -8,19 +8,30 @@
 // @icon         https://cdn.iconscout.com/icon/premium/png-512-thumb/file-time-info-3538395-2961069.png?f=avif&w=256
 // @grant       GM.setValue
 // @grant       GM.getValue
+// @grant      GM.registerMenuCommand
+
 // ==/UserScript==
 
-(async () => {
-  let count_before = await GM.getValue("count", 0);
+// (async () => {
+//   let getawal = await GM.getValue("status", true);
 
-  // Note awaiting the set -- required so the next get sees this set.
-  await GM.setValue("count", count_before + 1);
+//   // Note awaiting the set -- required so the next get sees this set.
+//   await GM.setValue("status", false);
 
-  // Get the value again, just to demonstrate order-of-operations.
-  let count_after = await GM.getValue("count");
+//   // Get the value again, just to demonstrate order-of-operations.
+//   let isiGM = await GM.getValue("status");
 
-  console.log("Greasemonkey set-and-get Example has run", count_after, "times");
-})();
+//   console.log("isi GM value", isiGM, " nah");
+// })();
+GM.registerMenuCommand("Zoom video (default = 1)", () => {
+  var zoomNumber = prompt("Default 1 ");
+  if (zoomNumber >= 1) {
+    document.querySelector('[tabindex="-1"]:has(video)').style.zoom = zoomNumber;
+  }else if (zoomNumber == null) {
+    document.querySelector('[tabindex="-1"]:has(video)').style.zoom = 1;
+    
+  }
+});
 
 (function () {
   "use strict";
@@ -36,13 +47,12 @@ margin: auto;
 }
 
 .scrollCheckCointainer {
-opacity: 50%;
 bottom: 15%;
 left: 1%;
+padding: 0.5rem;
 }
-
 .sliderContainer {
-width: 545px;
+width: 500px;
 }
 
 .slider-control {
@@ -58,6 +68,9 @@ transition: opacity .2s;
 
 .slider-control:hover {
 opacity: 1;
+}
+.scrollCheckCointainer:hover {
+  background: #0866ffa8;
 }
 
 .slider-control::-webkit-slider-thumb {
@@ -79,6 +92,9 @@ cursor: pointer;
 [type="checkbox"] {
 vertical-align: middle;
 }
+.scrollCheckCointainer * {
+  color: azure;
+}
     `;
 
   // Menambahkan gaya CSS ke head dokumen
@@ -89,7 +105,7 @@ vertical-align: middle;
   const scrollCheckCointainer = document.createElement("div");
   scrollCheckCointainer.className = "scrollCheckCointainer";
   scrollCheckCointainer.innerHTML = `
-       <h1>Pilih Opsi:</h1>
+    
 
       <div for="opsi1">
           <input type="checkbox" id="opsi1" class="checkbox" name="opsi1">
@@ -103,36 +119,13 @@ vertical-align: middle;
 
 
       <div for="opsi3">
-          <input type="checkbox" id="opsi3" class="checkbox"  name="opsi3">
-          <label class = "ishidden">Opsi 3</label>
+          <input type="checkbox" id="cb1" class="checkbox"  name="opsi3">
+          <label class = "ishidden">Auto Next</label>
       </div>
     `;
-  scrollCheckCointainer.style.color = "white"; // Ubah warna teks menjadi putih
   scrollCheckCointainer.style.zIndex = "999";
   scrollCheckCointainer.style.position = "fixed";
 
-  // Buat elemen checkbox
-  // const scrollCheckbox = document.createElement("input");
-  // scrollCheckbox.style.position = "fixed";
-  // scrollCheckbox.type = "checkbox";
-  // scrollCheckbox.id = "scrollCheckboxStatus";
-  // scrollCheckbox.style.zIndex = "9999";
-
-  // // Buat label untuk checkbox
-  // const scrollCheckboxLabel = document.createElement("div");
-  // scrollCheckboxLabel.textContent = "AutoScroll";
-  // scrollCheckboxLabel.htmlFor = "scrollCheckbox";
-
-  // // Atur posisi label dan checkbox
-  // scrollCheckboxLabel.style.position = "fixed";
-  // scrollCheckboxLabel.style.bottom = "20px";
-  // scrollCheckboxLabel.style.left = "20px";
-  // scrollCheckbox.style.marginRight = "5px";
-  // scrollCheckbox.style.zIndex = "9999";
-
-  // // Tambahkan elemen-elemen ke dalam body dokumen
-  // document.body.appendChild(scrollCheckboxLabel);
-  // document.body.appendChild(scrollCheckbox);
   document.body.appendChild(scrollCheckCointainer);
 
   const toggleSwitch = document.createElement("div");
@@ -146,14 +139,18 @@ vertical-align: middle;
       </span>
     `;
 
-  const scrollCheckbox = document.querySelector(".checkbox");
+  const scrollCheckbox = document.querySelector("#cb1");
   // Ketika status checkbox berubah
   scrollCheckbox.addEventListener("change", function () {
     if (scrollCheckbox.checked) {
       // Aktifkan fungsi scroll di sini
+      GM.setValue("status", true);
+      statusNextVideo = true;
       console.log("Fungsi scroll diaktifkan.");
     } else {
       // Matikan fungsi scroll di sini
+      GM.setValue("status", false);
+      statusNextVideo = false;
       console.log("Fungsi scroll dinonaktifkan.");
     }
   });
@@ -162,20 +159,20 @@ vertical-align: middle;
   ckbox.addEventListener("mouseover", mouseOver);
   ckbox.addEventListener("mouseout", mouseOut);
 
-  const labels = document.querySelectorAll('.scrollCheckCointainer label');
+  const labels = document.querySelectorAll(".scrollCheckCointainer label");
 
   function mouseOver() {
-    document.querySelector('.scrollCheckCointainer label').classList.add('ishidden');
+    document
+      .querySelector(".scrollCheckCointainer label")
+      .classList.add("ishidden");
     for (const label of labels) {
-      label.classList.remove('ishidden');
-
+      label.classList.remove("ishidden");
     }
   }
 
   function mouseOut() {
     for (const label of labels) {
-      label.classList.add('ishidden');
-
+      label.classList.add("ishidden");
     }
   }
 
@@ -214,6 +211,8 @@ vertical-align: middle;
   // Gaya display waktu sesuai kebutuhan Anda
   currentTimeDisplay.style.color = "white"; // Ubah warna teks menjadi putih
 
+  // $('[tabindex="-1"]:has(video)').style.zoom = 2
+
   //currentTimeDisplay.style.position = "fixed";
   // currentTimeDisplay.style.bottom = "5px"; // Sesuaikan dengan posisi slider
   // currentTimeDisplay.style.left = "calc(50% - 215px)"; // Tempatkan di tengah horizontal
@@ -248,8 +247,10 @@ vertical-align: middle;
       .padStart(2, "0");
     return Minutes + ":" + Seconds;
   }
+  var statusNextVideo = true;
+
   // ketika sudah load
-  window.onload = (event) =>{
+  window.onload = (event) => {
     // hilangkan muted
     // if (document.querySelector("video[playsinline]").currentTime > 0.1) {
     //   setTimeout(function() {
@@ -258,8 +259,21 @@ vertical-align: middle;
 
     //   }, 1000);
     // }
+    // GM.setValue("status", true);
+    (async () => {
+      // await GM.setValue("status", false);
 
-};
+      statusNextVideo = await GM.getValue("status");
+      scrollCheckbox.checked = await GM.getValue("status");
+
+      // console.log("isi GM value", isiGM, " nah");
+      console.log("isi GM di load: " + statusNextVideo);
+    })();
+
+    if (document.querySelector('[aria-label="Batalkan senyap"]')) {
+      document.querySelector('[aria-label="Batalkan senyap"]').click();
+    }
+  };
 
   function setupVideoEventListener(video) {
     video.addEventListener("timeupdate", info);
@@ -279,7 +293,9 @@ vertical-align: middle;
         video.currentTime = setcurrentTime;
       }
     });
-    
+    window.addEventListener("resize", function (event) {
+      console.log(video.parentElement.clientWidth);
+    });
 
     function info() {
       // console.log(
@@ -299,9 +315,9 @@ vertical-align: middle;
 
     function myHandler(e) {
       //console.log("selesai : " + this.duration)
-      setTimeout(function() {
-        document.querySelector('[aria-label="Kartu Berikutnya"]').parentElement.click()
-      },1000)
+      if (statusNextVideo) {
+        document.querySelector('[aria-label="Kartu Berikutnya"]').click();
+      }
     }
   }
 
@@ -327,14 +343,6 @@ vertical-align: middle;
 
   // Mulai memantau subtree dokumen
   observer.observe(document, { subtree: true, childList: true });
-
-  
-  window.addEventListener("resize", function (event) {
-    if (document.querySelector('video').offsetWidth) {
-      console.log(document.querySelector('video').offsetWidth);
-    
-    }
-  });
 
   // Panggil fungsi pertama kali untuk menangani video yang sudah ada saat halaman dimuat
   handleVideoChanges();
